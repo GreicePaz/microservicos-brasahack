@@ -1,5 +1,5 @@
 from flask import Flask
-from flask_restful import Resource, request, abort
+from flask_restful import Resource, Api, request, abort
 from lib import util, microservice
 
 import requests, json, datetime
@@ -7,10 +7,10 @@ import requests, json, datetime
 app = Flask(__name__)
 app.config.from_pyfile("local.cfg")
 
+api = Api(app)
         
 class ImportCsvIndices(Resource):
-    @app.route('/v1/csv/indicators', methods=['POST'])
-    def csv_mensal():
+    def post(self):
         try:
             csv_file = request.files['file']
             date = request.form['date']
@@ -31,8 +31,8 @@ class ImportCsvIndices(Resource):
 
         return params, 200
 
-    @app.route('/v1/csv/configuration', methods=['POST'])
-    def csv_anual():
+class Configuration(Resource):
+    def post(self):
         try:
             date = request.form['date']
             csv_file = request.files['file']
@@ -42,8 +42,8 @@ class ImportCsvIndices(Resource):
         csv_json = util.csv_to_json(csv_file)
 
 
-    @app.route('/v1/historic', methods=['GET'])
-    def get():
+class Historic(Resource):
+    def get(self):
         try:
             params = request.args
         except Exception as e:
@@ -105,11 +105,11 @@ class ImportCsvIndices(Resource):
         }
 
         return response
+
         
-        
+api.add_resource(Historic, 'v1/historic')
+api.add_resource(Configuration, '/v1/csv/configuration')
+api.add_resource(ImportCsvIndices, '/v1/csv/indicators')
 
-
-    
-
-
-app.run(debug=app.config['DEBUG'])
+if __name__ == '__main__':
+    app.run(debug=app.config['DEBUG'])
