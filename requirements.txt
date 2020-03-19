@@ -1,3 +1,4 @@
+Flask
 Flask-RESTful==0.3.8
 requests==2.22.0
 uwsgi
