@@ -106,10 +106,11 @@ class Historic(Resource):
 
         return response
 
-        
+
 api.add_resource(Historic, 'v1/historic')
 api.add_resource(Configuration, '/v1/csv/configuration')
 api.add_resource(ImportCsvIndices, '/v1/csv/indicators')
 
 if __name__ == '__main__':
-    app.run(debug=app.config['DEBUG'])
+    application = app
+    application.run(debug=application.config['DEBUG'])
