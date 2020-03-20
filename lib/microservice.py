@@ -31,6 +31,7 @@ def analise_mensal(date, csv):
         media = [n for n in dict_persons.values() if type(n) == float]
 
         dict_persons['media'] = round(sum(media)/len(media), 1)
+        dict_persons['date'] = date
         persons.append(dict_persons)
                 
 
@@ -44,7 +45,6 @@ def analise_mensal(date, csv):
         indicador.append({
             'name': k,
             'media': media,
-            'total': bv
         })
 
     retorno = {
@@ -72,11 +72,12 @@ def analise_media_anual(params, url):
         except:
             abort(404, message="Erro ao buscar no banco de dados.")
         
-        analise_search = analise_mensal(date, persons)
-        
-        media_indicators = analise_search.get('media_indicators', 0)
+        if persons:
+            analise_search = analise_mensal(date, persons)
+            
+            media_indicators = analise_search.get('media_indicators', 0)
 
-        medias.append({'month': i, 'media': media_indicators})
+            medias.append({'month': i, 'media': media_indicators})
 
     return medias
 
