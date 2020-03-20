@@ -1,10 +1,13 @@
 from flask import Flask
+from flask_cors import CORS
 from flask_restful import Resource, Api, request, abort
 from lib import util, microservice
 
 import requests, json, datetime
 
 app = Flask(__name__)
+cors = CORS(app, resources={r"/*": {"origins": "*"}})
+
 app.config.from_pyfile("local.cfg")
 
 api = Api(app)
@@ -20,6 +23,8 @@ class ImportCsvIndices(Resource):
         csv_json = util.csv_to_json(csv_file)
 
         params = microservice.analise_mensal(date, csv_json)
+
+        return params
 
         params_persons = params.get('persons')
         url = f"{app.config['URL_JSON_SERVER']}/persons"
