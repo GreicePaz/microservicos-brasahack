@@ -24,8 +24,6 @@ class ImportCsvIndices(Resource):
 
         params = microservice.analise_mensal(date, csv_json)
 
-        return params
-
         params_persons = params.get('persons')
         url = f"{app.config['URL_JSON_SERVER']}/persons"
 
