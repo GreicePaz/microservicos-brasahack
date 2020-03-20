@@ -109,17 +109,15 @@ class Historic(Resource):
             except:
                 abort(404, message="Erro ao buscar no banco de dados.")
 
-        response = {
-            [
+        response = [
                 {
                     "date": f'{ano}-{mes}',
                     "mediaMonths": media_months,
                     "persons": persons,
                     "indicators": indicators,
-                    "weight": [0.1, 0.2, 0.3, 0.2, 0.05, 0.15],
+                    "weight": [0.1, 0.2, 0.3, 0.2, 0.05, 0.15]
                 }
             ]
-        }
 
         return response
 
