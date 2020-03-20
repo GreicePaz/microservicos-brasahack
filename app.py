@@ -21,15 +21,27 @@ class ImportCsvIndices(Resource):
 
         params = microservice.analise_mensal(date, csv_json)
 
-        # url = f"{app.config['URL_JSON_SERVER']}"
+        params_persons = params.get('persons')
+        url = f"{app.config['URL_JSON_SERVER']}/persons"
 
-        # try:
-        #     r = requests.get(url, params=retorno)
-        #     response = r.json()
-        # except:
-        #     abort(404, message="Erro ao salvar os dados no banco.")
+        for persons in params_persons:
+            try:
+                r = requests.post(url, data=persons)
+                response = r.json()
+            except:
+                abort(404, message="Erro ao salvar os dados no banco 1.")
 
-        return params, 200
+        url = f"{app.config['URL_JSON_SERVER']}/media_months"
+        params_month = {'date': date, 'media': params.get('media_indicators')}
+
+        try:
+            r = requests.post(url, data=params_month)
+            response = r.json()
+        except:
+            abort(404, message="Erro ao salvar os dados no banco 2.")
+        
+
+        return {"uploaded": True}, 200
 
 class Configuration(Resource):
     def post(self):
