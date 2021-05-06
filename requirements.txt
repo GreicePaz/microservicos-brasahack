@@ -1,5 +1,5 @@
 Flask
 Flask-RESTful==0.3.8
 requests==2.22.0
-flask-cors==3.0.8
+flask-cors==3.0.9
 uwsgi
